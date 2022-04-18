@@ -22,5 +22,6 @@
 	export let teams;
 </script>
 
-<p>{teams[0].full_name}</p>
+<p class="text-red-500">{teams[0].full_name}</p>
 <img src={teams[0].logo} alt={teams[0].full_name} />
+<button class="btn btn-primary">Click me</button>
