@@ -1,2 +1,26 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script context="module">
+	import supabase from '../supabaseClient';
+
+	export async function load() {
+		let { data: teams, error } = await supabase
+			.from('teams')
+			.select(
+				`*, division (name),
+    conference (name)`
+			)
+			.eq('id', 1);
+
+		return {
+			props: {
+				teams
+			}
+		};
+	}
+</script>
+
+<script>
+	export let teams;
+</script>
+
+<p>{teams[0].full_name}</p>
+<img src={teams[0].logo} alt={teams[0].full_name} />
