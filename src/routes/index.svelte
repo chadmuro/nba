@@ -1,3 +1,7 @@
-<script></script>
+<script>
+	import Hero from '$lib/components/Hero.svelte';
+</script>
 
-<h1>Home page</h1>
+<div class="w-full">
+	<Hero />
+</div>
