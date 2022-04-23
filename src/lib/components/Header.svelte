@@ -23,6 +23,7 @@
 				<li><a href="/teams">Teams</a></li>
 				<li><a href="/games">Games History</a></li>
 				<li><a href="/leaderboard">Leaderboard</a></li>
+				<li><a href="/profile">Profile</a></li>
 			</ul>
 		</div>
 		<a href="/" class="btn btn-ghost normal-case text-xl">NBA Pick'em</a>
@@ -32,9 +33,10 @@
 			<li><a href="/teams">Teams</a></li>
 			<li><a href="/games">Games History</a></li>
 			<li><a href="/leaderboard">Leaderboard</a></li>
+			<li><a href="/profile">Profile</a></li>
 		</ul>
 	</div>
 	<div class="navbar-end">
-		<a href="/auth" class="btn">Login</a>
+		<a href="/login" class="btn">Login</a>
 	</div>
 </header>
