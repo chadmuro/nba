@@ -1,3 +1,24 @@
+<script>
+	import supabase from '$lib/supabaseClient';
+	import { session } from '$app/stores';
+	import { goto } from '$app/navigation';
+
+	let loading = false;
+
+	const handleLogout = async () => {
+		try {
+			loading = true;
+			let { error } = await supabase.auth.signOut();
+			if (error) throw error;
+			goto('/');
+		} catch (error) {
+			console.error(error.message);
+		} finally {
+			loading = false;
+		}
+	};
+</script>
+
 <header class="navbar bg-base-100">
 	<div class="navbar-start">
 		<div class="dropdown">
@@ -37,6 +58,10 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		<a href="/login" class="btn">Login</a>
+		{#if $session}
+			<button on:click={handleLogout} class="btn" disabled={loading}>Logout</button>
+		{:else}
+			<a href="/login" class="btn">Login</a>
+		{/if}
 	</div>
 </header>
