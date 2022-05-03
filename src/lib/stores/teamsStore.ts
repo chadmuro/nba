@@ -14,7 +14,7 @@ export async function getTeams() {
     .order('full_name', { ascending: true });
 
   if (error) {
-    console.error(error);
+    console.error(error.message);
   }
   teams.set(data);
 }

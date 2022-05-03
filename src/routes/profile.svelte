@@ -16,6 +16,21 @@
 			.eq('id', session)
 			.single();
 
+		if (profile.avatar_url) {
+			let { data: imageUrl } = supabase.storage
+				.from('avatars')
+				.getPublicUrl(profile.avatar_url.split('/').slice(1).join('/'));
+
+			return {
+				props: {
+					profile: {
+						...profile,
+						imageUrl: imageUrl.publicURL
+					}
+				}
+			};
+		}
+
 		return {
 			props: {
 				profile
@@ -25,6 +40,7 @@
 </script>
 
 <script>
+	import UploadAvatar from '$lib/components/UploadAvatar.svelte';
 	import supabase from '$lib/supabaseClient';
 	import countries from '$lib/countries';
 	import { session } from '$app/stores';
@@ -36,11 +52,23 @@
 	let username = profile?.username || null;
 	let country = profile?.country || null;
 	let favorite_team = profile?.favorite_team || null;
+	let file = null;
 	let avatar_url = null;
 
 	async function updateProfile() {
 		try {
 			loading = true;
+
+			if (file) {
+				const { data: imageData, error: imageError } = await supabase.storage
+					.from('avatars')
+					.upload($session + '/' + Date.now(), file, {
+						cacheControl: '3600',
+						upsert: false
+					});
+				if (imageError) console.error(imageError.message);
+				avatar_url = imageData.Key;
+			}
 
 			const updates = {
 				id: $session,
@@ -64,7 +92,6 @@
 	}
 </script>
 
-<h1>My Profile</h1>
 <div class="mx-auto flex justify-center max-w-md border border-gray-500 p-8 rounded">
 	<form class="form-control w-full max-w-xs" on:submit|preventDefault={updateProfile}>
 		<label class="label" for="username">
@@ -97,15 +124,7 @@
 				</option>
 			{/each}
 		</select>
-		<label class="label" for="image">
-			<span class="label-text">Profile</span>
-		</label>
-		<input
-			id="image"
-			type="file"
-			placeholder="Profile"
-			class="input input-primary input-bordered w-full max-w-xs"
-		/>
+		<UploadAvatar bind:file imageUrl={profile.imageUrl} />
 		<button class={`btn btn-primary my-4 ${loading && 'loading'}`}>Submit</button>
 	</form>
 </div>
