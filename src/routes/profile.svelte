@@ -42,7 +42,7 @@
 <script>
 	import UploadAvatar from '$lib/components/UploadAvatar.svelte';
 	import supabase from '$lib/supabaseClient';
-	import countries from '$lib/countries';
+	import countries from '$lib/constants/countries';
 	import { session } from '$app/stores';
 	import { teams } from '$lib/stores/teamsStore';
 
