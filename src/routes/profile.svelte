@@ -94,6 +94,8 @@
 
 <div class="mx-auto flex justify-center max-w-md border border-gray-500 p-8 rounded">
 	<form class="form-control w-full max-w-xs" on:submit|preventDefault={updateProfile}>
+		<h1 class="text-2xl text-center">My Profile</h1>
+		<p class="description my-4 text-center">Rep your country and favorite team!</p>
 		<label class="label" for="username">
 			<span class="label-text">Username</span>
 		</label>
