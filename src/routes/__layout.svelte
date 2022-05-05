@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import supabase from '$lib/supabaseClient';
@@ -22,6 +23,7 @@
 	});
 </script>
 
+<SvelteToast options={{ classes: ['log'] }} />
 <div class="min-h-screen flex flex-col">
 	<Header />
 	<main class="max-w-7xl mx-auto p-4 flex-1 w-full">
@@ -29,3 +31,14 @@
 	</main>
 	<Footer />
 </div>
+
+<style>
+	:global(.log.info) {
+		--toastBackground: #48bb78;
+		--toastBarBackground: #2f855a;
+	}
+	:global(.log.warn) {
+		--toastBackground: #f56565;
+		--toastBarBackground: #c53030;
+	}
+</style>

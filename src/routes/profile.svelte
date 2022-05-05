@@ -40,6 +40,7 @@
 </script>
 
 <script>
+	import { toast } from '@zerodevx/svelte-toast';
 	import UploadAvatar from '$lib/components/UploadAvatar.svelte';
 	import supabase from '$lib/supabaseClient';
 	import countries from '$lib/constants/countries';
@@ -84,7 +85,9 @@
 			});
 
 			if (error) throw error;
+			toast.push('Profile information saved', { classes: ['info'] });
 		} catch (error) {
+			toast.push(error.error_desription || error.message, { classes: ['warn'] });
 			console.error(error.message);
 		} finally {
 			loading = false;
