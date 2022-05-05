@@ -23,7 +23,7 @@
 				src="https://upload.wikimedia.org/wikipedia/en/9/97/Dallas_Mavericks_logo.svg"
 				alt="Mavericks"
 			/>
-			<button class="btn btn-secondary btn-small">Mavericks</button>
+			<button class="btn btn-small">Mavericks</button>
 		</div>
 		<div class="flex flex-col items-center justify-between w-48 p-2">
 			<h3 class="text-xl">Golden State Warriors</h3>
@@ -32,7 +32,7 @@
 				src="https://upload.wikimedia.org/wikipedia/en/0/01/Golden_State_Warriors_logo.svg"
 				alt="Warriors"
 			/>
-			<button class="btn btn-secondary btn-small">Warriors</button>
+			<button class="btn btn-small">Warriors</button>
 		</div>
 	</div>
 </div>
