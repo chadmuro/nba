@@ -9,7 +9,10 @@ const config = {
 
 	kit: {
 		adapter: adapter()
-	}
+	},
+	alias: {
+    yup: 'yup/lib/index.js'
+  }
 };
 
 export default config;

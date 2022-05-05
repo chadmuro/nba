@@ -16,7 +16,7 @@
 			.eq('id', session)
 			.single();
 
-		if (profile.avatar_url) {
+		if (profile?.avatar_url) {
 			let { data: imageUrl } = supabase.storage
 				.from('avatars')
 				.getPublicUrl(profile.avatar_url.split('/').slice(1).join('/'));
@@ -117,14 +117,14 @@
 			<span class="label-text">Favorite Team</span>
 		</label>
 		<select bind:value={favorite_team} class="select select-primary w-full max-w-xs" id="country">
-			<option disabled selected>Team</option>
+			<option disabled value={null} selected>Team</option>
 			{#each $teams as team}
 				<option value={team.id}>
 					{team.full_name}
 				</option>
 			{/each}
 		</select>
-		<UploadAvatar bind:file imageUrl={profile.imageUrl} />
+		<UploadAvatar bind:file imageUrl={profile?.imageUrl} />
 		<button class={`btn btn-primary my-4 ${loading && 'loading'}`}>Submit</button>
 	</form>
 </div>
