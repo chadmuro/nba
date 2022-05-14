@@ -6,16 +6,17 @@
 	import supabase from '$lib/supabaseClient';
 	import ErrorAlert from '$lib/components/ui/ErrorAlert.svelte';
 
+	export let game;
 	let loading = false;
 	let errorMessage = null;
 	let openModal = false;
 
 	const { form, errors, handleChange, handleSubmit, handleReset } = createForm({
 		initialValues: {
-			date: '',
-			time: '',
-			home_team: '',
-			away_team: ''
+			date: game.date,
+			time: game.time,
+			home_team: String(game.home_team.id),
+			away_team: String(game.away_team.id)
 		},
 		validationSchema: yup.object().shape({
 			date: yup.string().required('Date is required'),
@@ -26,12 +27,15 @@
 		onSubmit: async (values) => {
 			try {
 				loading = true;
-				let { error } = await supabase.from('games').upsert({
-					date: values.date,
-					time: values.time,
-					home_team: values.home_team,
-					away_team: values.away_team
-				});
+				let { error } = await supabase
+					.from('games')
+					.update({
+						date: values.date,
+						time: values.time,
+						home_team: values.home_team,
+						away_team: values.away_team
+					})
+					.match({ id: game.id });
 				if (error) throw error;
 				toast.push('Game information saved', { classes: ['info'] });
 				// TODO - close modal after update
@@ -50,22 +54,18 @@
 	};
 </script>
 
-<div class="flex justify-end py-4">
-	<label
-		for="new-game-modal"
-		class="btn btn-primary modal-button"
-		on:click={() => (openModal = true)}>Add game</label
-	>
-</div>
-<input type="checkbox" id="new-game-modal" class="modal-toggle" on:click={handleCloseModal} />
-<label for="new-game-modal" class={`modal cursor-pointer ${openModal && 'modal-open'}`}>
+<label for="edit-game-modal" class="btn btn-ghost btn-xs" on:click={() => (openModal = true)}
+	>Edit</label
+>
+<input type="checkbox" id="edit-game-modal" class="modal-toggle" on:click={handleCloseModal} />
+<label for="edit-game-modal" class={`modal cursor-pointer ${openModal && 'modal-open'}`}>
 	<label class="modal-box relative" for="">
 		<label
-			for="new-game-modal"
+			for="edit-game-modal"
 			class="btn btn-sm btn-circle absolute right-2 top-2"
 			on:click={handleCloseModal}>✕</label
 		>
-		<h3 class="text-lg font-bold">Add a new game</h3>
+		<h3 class="text-lg font-bold">Edit game</h3>
 		<form class="py-4 form-control w-full max-w-xs" on:submit={handleSubmit} novalidate>
 			<label class="label" for="date">
 				<span class="label-text">Date</span>
