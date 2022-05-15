@@ -14,30 +14,43 @@
 			};
 		}
 
-		let { data: games, error } = await supabase
+		let { data: upcomingGames, error: upcomingGamesError } = await supabase
 			.from('games')
 			.select(
 				`*, home_team (id, full_name, logo),
     away_team (id, full_name, logo), season (year)`
 			)
+			.is('game_result', null)
+			.order('date', { ascending: true })
+			.limit(10);
+
+		let { data: completedGames, error: completedGamesError } = await supabase
+			.from('games')
+			.select(
+				`*, home_team (id, full_name, logo),
+    away_team (id, full_name, logo), season (year), game_result (home_team_score, away_team_score, winning_team, losing_team)`
+			)
+			.not('game_result', 'is', null)
 			.order('date', { ascending: true })
 			.limit(10);
 
 		return {
 			props: {
-				games
+				upcomingGames: upcomingGames || [],
+				completedGames: completedGames || []
 			}
 		};
 	}
 </script>
 
 <script>
-	export let games;
+	export let upcomingGames;
+	export let completedGames;
 </script>
 
 <div>
 	<NewGame />
-	<UpcomingGames {games} />
+	<UpcomingGames games={upcomingGames} />
 	<div class="py-8" />
-	<CompletedGames {games} />
+	<CompletedGames games={completedGames} />
 </div>

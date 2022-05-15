@@ -13,8 +13,9 @@
 				<th>Date</th>
 				<th>Time</th>
 				<th>Home team</th>
+				<th>Home team score</th>
 				<th>Away team</th>
-				<th />
+				<th>Away team score</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -23,10 +24,9 @@
 					<th>{game.date}</th>
 					<td>{game.time}</td>
 					<td>{game.home_team.full_name}</td>
+					<td />
 					<td>{game.away_team.full_name}</td>
-					<th>
-						<EditGame {game} />
-					</th>
+					<td />
 				</tr>
 			{/each}
 		</tbody>

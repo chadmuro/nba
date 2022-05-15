@@ -8,7 +8,7 @@
 
 	let loading = false;
 	let errorMessage = null;
-	let openModal = false;
+	let isModalOpen = false;
 
 	const { form, errors, handleChange, handleSubmit, handleReset } = createForm({
 		initialValues: {
@@ -34,7 +34,8 @@
 				});
 				if (error) throw error;
 				toast.push('Game information saved', { classes: ['info'] });
-				// TODO - close modal after update
+				handleCloseModal();
+				// TODO - refresh data (save in writable store?)
 			} catch (error) {
 				errorMessage = error.error_description || error.message;
 				console.error(error.error_description || error.message);
@@ -45,21 +46,20 @@
 	});
 
 	const handleCloseModal = () => {
-		openModal = false;
+		isModalOpen = false;
 		handleReset();
 	};
 </script>
 
+<!-- The button to open modal -->
 <div class="flex justify-end py-4">
-	<label
-		for="new-game-modal"
-		class="btn btn-primary modal-button"
-		on:click={() => (openModal = true)}>Add game</label
-	>
+	<label for="new-game-modal-button" class="btn btn-primary modal-button">New Game</label>
 </div>
-<input type="checkbox" id="new-game-modal" class="modal-toggle" on:click={handleCloseModal} />
-<label for="new-game-modal" class={`modal cursor-pointer ${openModal && 'modal-open'}`}>
-	<label class="modal-box relative" for="">
+
+<!-- The modal contents -->
+<input type="checkbox" id="new-game-modal-button" class="modal-toggle" bind:checked={isModalOpen} />
+<div class="modal" on:click|self={() => (isModalOpen = false)}>
+	<div class="modal-box">
 		<label
 			for="new-game-modal"
 			class="btn btn-sm btn-circle absolute right-2 top-2"
@@ -105,7 +105,7 @@
 				on:change={handleChange}
 				name="home_team"
 				class={`select w-full max-w-xs ${$errors.home_team ? 'select-error' : 'select-primary'}`}
-				id="country"
+				id="home_team"
 			>
 				<option disabled value="" selected>Home Team</option>
 				{#each $teams as team}
@@ -123,7 +123,7 @@
 				on:change={handleChange}
 				name="away_team"
 				class={`select w-full max-w-xs ${$errors.away_team ? 'select-error' : 'select-primary'}`}
-				id="country"
+				id="away_team"
 			>
 				<option disabled value="" selected>Away Team</option>
 				{#each $teams as team}
@@ -138,5 +138,5 @@
 			{/if}
 			<button class={`btn btn-primary my-4 ${loading && 'loading'}`}>Submit</button>
 		</form>
-	</label>
-</label>
+	</div>
+</div>

@@ -9,7 +9,7 @@
 	export let game;
 	let loading = false;
 	let errorMessage = null;
-	let openModal = false;
+	let isModalOpen = false;
 
 	const { form, errors, handleChange, handleSubmit, handleReset } = createForm({
 		initialValues: {
@@ -27,7 +27,7 @@
 		onSubmit: async (values) => {
 			try {
 				loading = true;
-				let { error } = await supabase
+				let { data: updatedGame, error } = await supabase
 					.from('games')
 					.update({
 						date: values.date,
@@ -38,7 +38,8 @@
 					.match({ id: game.id });
 				if (error) throw error;
 				toast.push('Game information saved', { classes: ['info'] });
-				// TODO - close modal after update
+				handleCloseModal();
+				// TODO - refresh data (save in writable store?)
 			} catch (error) {
 				errorMessage = error.error_description || error.message;
 				console.error(error.error_description || error.message);
@@ -49,19 +50,25 @@
 	});
 
 	const handleCloseModal = () => {
-		openModal = false;
+		isModalOpen = false;
 		handleReset();
 	};
 </script>
 
-<label for="edit-game-modal" class="btn btn-ghost btn-xs" on:click={() => (openModal = true)}
-	>Edit</label
->
-<input type="checkbox" id="edit-game-modal" class="modal-toggle" on:click={handleCloseModal} />
-<label for="edit-game-modal" class={`modal cursor-pointer ${openModal && 'modal-open'}`}>
-	<label class="modal-box relative" for="">
+<!-- The button to open modal -->
+<label for={`edit-game-modal-button-${game.id}`} class="btn btn-ghost btn-xs">Edit</label>
+
+<!-- The modal contents -->
+<input
+	type="checkbox"
+	id={`edit-game-modal-button-${game.id}`}
+	class="modal-toggle"
+	bind:checked={isModalOpen}
+/>
+<div class="modal" on:click|self={() => (isModalOpen = false)}>
+	<div class="modal-box">
 		<label
-			for="edit-game-modal"
+			for={`edit-game-modal-${game.id}`}
 			class="btn btn-sm btn-circle absolute right-2 top-2"
 			on:click={handleCloseModal}>✕</label
 		>
@@ -105,7 +112,7 @@
 				on:change={handleChange}
 				name="home_team"
 				class={`select w-full max-w-xs ${$errors.home_team ? 'select-error' : 'select-primary'}`}
-				id="country"
+				id="home_team"
 			>
 				<option disabled value="" selected>Home Team</option>
 				{#each $teams as team}
@@ -123,7 +130,7 @@
 				on:change={handleChange}
 				name="away_team"
 				class={`select w-full max-w-xs ${$errors.away_team ? 'select-error' : 'select-primary'}`}
-				id="country"
+				id="away_team"
 			>
 				<option disabled value="" selected>Away Team</option>
 				{#each $teams as team}
@@ -138,5 +145,5 @@
 			{/if}
 			<button class={`btn btn-primary my-4 ${loading && 'loading'}`}>Submit</button>
 		</form>
-	</label>
-</label>
+	</div>
+</div>
