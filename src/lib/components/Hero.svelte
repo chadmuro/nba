@@ -13,7 +13,7 @@
 	</div>
 </div>
 <div class="mt-20 text-center">
-	<h2 class="text-3xl font-bold">Today's Pick'em</h2>
+	<h2 class="text-3xl font-bold">Today's Pick'em Game</h2>
 	<p class="py-2">Who you got?</p>
 	<div class="flex justify-center">
 		<div class="flex flex-col items-center justify-between w-48 p-2">

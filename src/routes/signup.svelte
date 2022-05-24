@@ -1,3 +1,18 @@
+<script context="module">
+	export async function load({ session }) {
+		if (session) {
+			return {
+				status: 302,
+				redirect: '/profile'
+			};
+		}
+
+		return {
+			props: {}
+		};
+	}
+</script>
+
 <script>
 	import supabase from '$lib/supabaseClient';
 	import { goto } from '$app/navigation';
