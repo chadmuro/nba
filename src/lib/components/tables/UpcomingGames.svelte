@@ -8,7 +8,6 @@
 <h2>Upcoming Games</h2>
 <div class="overflow-x-auto">
 	<table class="table w-full">
-		<!-- head -->
 		<thead>
 			<tr>
 				<th>Date</th>
