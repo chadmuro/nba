@@ -1,5 +1,6 @@
 <script>
 	import EditGame from '$lib/components/modals/EditGame.svelte';
+	import AddScore from '$lib/components/modals/AddScore.svelte';
 
 	export let games;
 </script>
@@ -29,7 +30,7 @@
 						<EditGame {game} />
 					</th>
 					<th>
-						<button class="btn btn-ghost btn-xs">Add Score</button>
+						<AddScore {game} />
 					</th>
 				</tr>
 			{/each}
