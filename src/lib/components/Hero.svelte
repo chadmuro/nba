@@ -1,3 +1,7 @@
+<script>
+	import { session } from '$app/stores';
+</script>
+
 <div class="bg-base-200">
 	<div class="py-36">
 		<div class="hero-content text-center ">
@@ -7,7 +11,9 @@
 					Welcome to NBA Pick'em. Choose a winner every night based on the line and climb the
 					leaderboard!
 				</p>
-				<a href="/login" class="btn btn-primary">Get Started</a>
+				<a href={session ? '/leaderboard' : '/login'} class="btn btn-primary"
+					>{session ? 'Check out the leaderboard' : 'Get Started'}</a
+				>
 			</div>
 		</div>
 	</div>

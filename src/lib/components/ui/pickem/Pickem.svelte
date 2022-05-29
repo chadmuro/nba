@@ -1,4 +1,7 @@
 <script>
+	import { toast } from '@zerodevx/svelte-toast';
+	import { scale, fly } from 'svelte/transition';
+	import { quintOut } from 'svelte/easing';
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
 	import supabase from '$lib/supabaseClient';
@@ -11,42 +14,109 @@
 		if (!$session) {
 			return goto('/login');
 		}
-		console.log('home team');
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
 			user_id: $session,
 			selected_team_id: id
 		});
-		console.log(data, error);
+		if (data) {
+			selectedTeam = data[0].selected_team_id;
+		}
+		if (error) {
+			toast.push(error.message, { classes: ['warn'] });
+		}
 	};
 
 	const handleAwayTeamClick = async (id) => {
 		if (!$session) {
 			return goto('/login');
 		}
-		console.log('away team');
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
 			user_id: $session,
 			selected_team_id: id
 		});
-		console.log(data, error);
+		if (data) {
+			selectedTeam = data[0].selected_team_id;
+		}
+		if (error) {
+			toast.push(error.message, { classes: ['warn'] });
+		}
 	};
 </script>
 
 <div class="mt-20 text-center">
 	<h2 class="text-3xl font-bold">Today's Pick'em Game</h2>
 	<p class="py-2">Who you got?</p>
-	<div class="flex justify-center">
-		<PickemCard
-			team={upcomingGame.away_team}
-			{selectedTeam}
-			handleTeamClick={handleAwayTeamClick}
-		/>
-		<PickemCard
-			team={upcomingGame.home_team}
-			{selectedTeam}
-			handleTeamClick={handleHomeTeamClick}
-		/>
-	</div>
+	{#if !selectedTeam}
+		<div class="max-w-xl mx-auto flex justify-evenly" transition:scale|local={{ duration: 400 }}>
+			<PickemCard team={upcomingGame.away_team} handleTeamClick={handleAwayTeamClick} />
+			<PickemCard team={upcomingGame.home_team} handleTeamClick={handleHomeTeamClick} />
+		</div>
+	{:else}
+		<div
+			class="max-w-xl mx-auto flex justify-evenly"
+			transition:scale|local={{ delay: 400, duration: 400 }}
+		>
+			<div class="flex flex-col items-center justify-between w-48 p-2">
+				<h3 class="text-md">{upcomingGame.away_team.full_name}</h3>
+				<img
+					class="h-16 w-16"
+					src={upcomingGame.away_team.logo}
+					alt={upcomingGame.away_team.full_name}
+				/>
+			</div>
+			<div class="flex flex-col items-center justify-between w-48 p-2">
+				<h3 class="text-md">{upcomingGame.home_team.full_name}</h3>
+				<img
+					class="h-16 w-16"
+					src={upcomingGame.home_team.logo}
+					alt={upcomingGame.home_team.full_name}
+				/>
+			</div>
+		</div>
+	{/if}
+
+	{#if selectedTeam && selectedTeam === upcomingGame.away_team.id}
+		<div
+			class="flex flex-col items-center justify-between w-48 p-2 mx-auto"
+			transition:fly|local={{
+				delay: 400,
+				duration: 400,
+				x: -500,
+				y: 0,
+				opacity: 0,
+				easing: quintOut
+			}}
+		>
+			<h3 class="text-xl">{upcomingGame.away_team.full_name}</h3>
+			<img
+				class="h-36 w-36"
+				src={upcomingGame.away_team.logo}
+				alt={upcomingGame.away_team.full_name}
+			/>
+			<button class="btn btn-small mt-2" disabled>Locked</button>
+		</div>
+	{/if}
+	{#if selectedTeam && selectedTeam === upcomingGame.home_team.id}
+		<div
+			class="flex flex-col items-center justify-between w-48 p-2 mx-auto"
+			transition:fly|local={{
+				delay: 400,
+				duration: 400,
+				x: 500,
+				y: 0,
+				opacity: 0,
+				easing: quintOut
+			}}
+		>
+			<h3 class="text-xl">{upcomingGame.home_team.full_name}</h3>
+			<img
+				class="h-36 w-36"
+				src={upcomingGame.home_team.logo}
+				alt={upcomingGame.home_team.full_name}
+			/>
+			<button class="btn btn-small mt-2" disabled>Locked</button>
+		</div>
+	{/if}
 </div>
