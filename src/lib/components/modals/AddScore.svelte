@@ -37,7 +37,7 @@
 
 			try {
 				loading = true;
-				let { data: gameResult, error } = await supabase.from('game_results').upsert({
+				const { data: gameResult, error } = await supabase.from('game_results').upsert({
 					completed: true,
 					winning_team: winningTeam,
 					losing_team: losingTeam,
@@ -47,13 +47,27 @@
 				});
 				if (error) throw error;
 
-				let { error: updateError } = await supabase
+				const { error: updateError } = await supabase
 					.from('games')
 					.update({
 						game_result: gameResult[0].id
 					})
 					.match({ id: game.id });
 				if (updateError) throw updateError;
+
+				const { data: gameSelect, error: gameSelectError } = await supabase
+					.from('game_select')
+					.update({
+						game_result: gameResult[0].id
+					})
+					.match({ game_id: game.id });
+
+				const { data: gameSelect2, error: gameSelectError2 } = await supabase
+					.from('game_select')
+					.update({
+						win: true
+					})
+					.match({ selected_team_id: winningTeam });
 
 				toast.push('Game result saved', { classes: ['info'] });
 				handleCloseModal();

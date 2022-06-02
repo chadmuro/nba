@@ -1,8 +1,5 @@
 <script context="module">
 	import supabase from '$lib/supabaseClient';
-	import NewGame from '$lib/components/modals/NewGame.svelte';
-	import UpcomingGames from '$lib/components/tables/UpcomingGames.svelte';
-	import CompletedGames from '$lib/components/tables/CompletedGames.svelte';
 
 	const adminId = import.meta.env.VITE_ADMIN_ID;
 
@@ -14,7 +11,7 @@
 			};
 		}
 
-		let { data: upcomingGames, error: upcomingGamesError } = await supabase
+		const { data: upcomingGames, error: upcomingGamesError } = await supabase
 			.from('games')
 			.select(
 				`*, home_team (id, full_name, logo),
@@ -24,7 +21,7 @@
 			.order('date', { ascending: true })
 			.limit(10);
 
-		let { data: completedGames, error: completedGamesError } = await supabase
+		const { data: completedGames, error: completedGamesError } = await supabase
 			.from('games')
 			.select(
 				`*, home_team (id, full_name, logo),
@@ -44,6 +41,10 @@
 </script>
 
 <script>
+	import NewGame from '$lib/components/modals/NewGame.svelte';
+	import UpcomingGames from '$lib/components/tables/UpcomingGames.svelte';
+	import CompletedGames from '$lib/components/tables/CompletedGames.svelte';
+
 	export let upcomingGames;
 	export let completedGames;
 </script>

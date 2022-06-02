@@ -1,5 +1,6 @@
 <script>
 	export let games;
+	export let showResult = false;
 </script>
 
 <h2>Completed Games</h2>
@@ -7,6 +8,9 @@
 	<table class="table w-full">
 		<thead>
 			<tr>
+				{#if showResult}
+					<th />
+				{/if}
 				<th>Date</th>
 				<th>Time</th>
 				<th>Home team</th>
@@ -18,6 +22,11 @@
 		<tbody>
 			{#each games as game}
 				<tr>
+					{#if showResult && game.win}
+						<th>🏆</th>
+					{:else if showResult && !game.win}
+						<th>😭</th>
+					{/if}
 					<th>{game.date}</th>
 					<td>{game.time}</td>
 					<td>
