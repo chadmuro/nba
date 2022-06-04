@@ -1,4 +1,5 @@
 <script>
+	import { DateTime } from 'luxon';
 	import { toast } from '@zerodevx/svelte-toast';
 	import { scale, fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
@@ -6,6 +7,7 @@
 	import { session } from '$app/stores';
 	import supabase from '$lib/supabaseClient';
 	import PickemCard from './PickemCard.svelte';
+	import { createDateTime } from '$lib/utils/createDateTime';
 
 	export let upcomingGame;
 	export let selectedTeam;
@@ -43,11 +45,17 @@
 			toast.push(error.message, { classes: ['warn'] });
 		}
 	};
+
+	const currentDt = createDateTime();
+	const gameDt = createDateTime(upcomingGame.date, upcomingGame.time);
+	// TODO - Disable buttons and UI when current time is passed game time
 </script>
 
 <div class="mt-20 text-center">
 	<h2 class="text-3xl font-bold">Today's Pick'em Game</h2>
-	<p class="py-2">Who you got?</p>
+	<p>{gameDt.toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY)}</p>
+	<p>{gameDt.toFormat('h:mm a, ZZZZ')}</p>
+	<p class="text-lg py-2">Who you got?</p>
 	{#if !selectedTeam}
 		<div class="max-w-xl mx-auto flex justify-evenly" transition:scale|local={{ duration: 400 }}>
 			<PickemCard team={upcomingGame.away_team} handleTeamClick={handleAwayTeamClick} />
