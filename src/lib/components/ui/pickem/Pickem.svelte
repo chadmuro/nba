@@ -1,7 +1,7 @@
 <script>
 	import { DateTime } from 'luxon';
 	import { toast } from '@zerodevx/svelte-toast';
-	import { scale, fly } from 'svelte/transition';
+	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { goto } from '$app/navigation';
 	import { session } from '$app/stores';
@@ -57,16 +57,43 @@
 	<p>{gameDt.toFormat('h:mm a, ZZZZ')}</p>
 	<p class="text-lg py-2">Who you got?</p>
 	{#if !selectedTeam}
-		<div class="max-w-xl mx-auto flex justify-evenly" transition:scale|local={{ duration: 400 }}>
-			<PickemCard team={upcomingGame.away_team} handleTeamClick={handleAwayTeamClick} />
-			<PickemCard team={upcomingGame.home_team} handleTeamClick={handleHomeTeamClick} />
+		<div class="max-w-xl mx-auto flex justify-evenly">
+			<div
+				transition:fly|local={{
+					duration: 400,
+					x: -500,
+					y: 0,
+					opacity: 0,
+					easing: quintOut
+				}}
+			>
+				<PickemCard team={upcomingGame.away_team} handleTeamClick={handleAwayTeamClick} />
+			</div>
+			<div
+				transition:fly|local={{
+					duration: 400,
+					x: 500,
+					y: 0,
+					opacity: 0,
+					easing: quintOut
+				}}
+			>
+				<PickemCard team={upcomingGame.home_team} handleTeamClick={handleHomeTeamClick} />
+			</div>
 		</div>
 	{:else}
-		<div
-			class="max-w-xl mx-auto flex justify-evenly"
-			transition:scale|local={{ delay: 400, duration: 400 }}
-		>
-			<div class="flex flex-col items-center justify-between w-48 p-2">
+		<div class="max-w-xl mx-auto flex justify-evenly">
+			<div
+				class="flex flex-col items-center justify-between w-48 p-2"
+				transition:fly|local={{
+					delay: 400,
+					duration: 400,
+					x: -500,
+					y: 0,
+					opacity: 0,
+					easing: quintOut
+				}}
+			>
 				<h3 class="text-md">{upcomingGame.away_team.full_name}</h3>
 				<img
 					class="h-16 w-16"
@@ -74,7 +101,17 @@
 					alt={upcomingGame.away_team.full_name}
 				/>
 			</div>
-			<div class="flex flex-col items-center justify-between w-48 p-2">
+			<div
+				class="flex flex-col items-center justify-between w-48 p-2"
+				transition:fly|local={{
+					delay: 400,
+					duration: 400,
+					x: 500,
+					y: 0,
+					opacity: 0,
+					easing: quintOut
+				}}
+			>
 				<h3 class="text-md">{upcomingGame.home_team.full_name}</h3>
 				<img
 					class="h-16 w-16"

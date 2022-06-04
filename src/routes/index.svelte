@@ -14,6 +14,10 @@
 
 		let selectedTeam;
 
+		if (!session) {
+			selectedTeam = undefined;
+		}
+
 		if (session) {
 			const { data, error: selectedTeamError } = await supabase
 				.from('game_select')
