@@ -14,9 +14,7 @@
 				<th>Date</th>
 				<th>Time</th>
 				<th>Home team</th>
-				<th>Home team score</th>
 				<th>Away team</th>
-				<th>Away team score</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -34,13 +32,23 @@
 					<th>{game.date}</th>
 					<td>{game.time}</td>
 					<td>
-						{game.home_team.full_name}
+						<div class="flex">
+							<img src={game.home_team.logo} alt={game.home_team.full_name} class="w-6 h-6 mr-2" />
+							<p>
+								{game.home_team.full_name}
+								<span class="font-bold">{game.game_result.home_team_score}</span>
+							</p>
+						</div>
 					</td>
-					<td>{game.game_result.home_team_score}</td>
 					<td>
-						{game.away_team.full_name}
+						<div class="flex">
+							<img src={game.away_team.logo} alt={game.away_team.full_name} class="w-6 h-6 mr-2" />
+							<p>
+								{game.away_team.full_name}
+								<span class="font-bold">{game.game_result.away_team_score}</span>
+							</p>
+						</div>
 					</td>
-					<td>{game.game_result.away_team_score}</td>
 				</tr>
 			{/each}
 		</tbody>
