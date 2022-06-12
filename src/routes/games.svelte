@@ -36,16 +36,39 @@
 <script>
 	import CompletedGames from '$lib/components/tables/CompletedGames.svelte';
 	import Pagination from '$lib/components/ui/Pagination.svelte';
+	import { session } from '$app/stores';
+	import { getPagination } from '$lib/utils/getPagination';
 
 	export let completedGames;
 	export let numberOfGames;
 
 	let currentPage = 1;
-	const handlePageClick = (page) => {
-		console.log('page click' + page);
+	const handlePageClick = async (page) => {
+		const { from, to } = getPagination(page - 1, 10);
+		const {
+			data: completedGamesPagination,
+			error: completedGamesError,
+			count
+		} = await supabase
+			.from('game_select')
+			.select(
+				`*, game_id (date, time, home_team (id, full_name, logo), away_team (id, full_name, logo), game_result (home_team_score, away_team_score, winning_team, losing_team))`,
+				{ count: 'exact' }
+			)
+			.match({ user_id: $session })
+			.not('game_result', 'is', null)
+			.order('created_at', { ascending: false })
+			.range(from, to)
+			.limit(10);
+
+		currentPage = page;
+		completedGameResults = completedGamesPagination.map((game) => ({
+			...game.game_id,
+			win: game.win
+		}));
 	};
 
-	const completedGameResults = completedGames.map((game) => ({
+	let completedGameResults = completedGames.map((game) => ({
 		...game.game_id,
 		win: game.win
 	}));
@@ -54,6 +77,6 @@
 <div>
 	<CompletedGames games={completedGameResults} showResult />
 	<div class="flex justify-center pt-4">
-		<Pagination {currentPage} totalCount={numberOfGames} {handlePageClick} perPage={1} />
+		<Pagination {currentPage} totalCount={numberOfGames} {handlePageClick} perPage={10} />
 	</div>
 </div>
