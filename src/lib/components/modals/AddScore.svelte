@@ -62,12 +62,38 @@
 					})
 					.match({ game_id: game.id });
 
-				const { data: gameSelect2, error: gameSelectError2 } = await supabase
+				const { data: winningTeamInfo, error: winningTeamError } = await supabase
 					.from('game_select')
 					.update({
 						win: true
 					})
 					.match({ selected_team_id: winningTeam });
+
+				const { data: losingTeamInfo, error: losingTeamError } = await supabase
+					.from('game_select')
+					.update({
+						win: false
+					})
+					.match({ selected_team_id: losingTeam });
+
+				const winningUsers = winningTeamInfo?.map((game) => game.user_id);
+				const losingUsers = losingTeamInfo?.map((game) => game.user_id);
+
+				const { data: profilePoints, error: profilePointsError } = await supabase.rpc(
+					'increment_points',
+					{
+						x: 3,
+						users: winningUsers
+					}
+				);
+
+				const { data: profilePoints2, error: profilePointsError2 } = await supabase.rpc(
+					'increment_points',
+					{
+						x: 1,
+						users: losingUsers
+					}
+				);
 
 				toast.push('Game result saved', { classes: ['info'] });
 				handleCloseModal();

@@ -5,7 +5,7 @@
 	export let games;
 </script>
 
-<h2>Upcoming Games</h2>
+<h2 class="text-2xl">Upcoming Games</h2>
 <div class="overflow-x-auto">
 	<table class="table w-full">
 		<thead>

@@ -21,7 +21,7 @@
 			)
 			.match({ user_id: session })
 			.not('game_result', 'is', null)
-			.order('created_at', { ascending: true })
+			.order('created_at', { ascending: false })
 			.limit(10);
 
 		return {

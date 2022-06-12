@@ -28,7 +28,7 @@
     away_team (id, full_name, logo), season (year), game_result (home_team_score, away_team_score, winning_team, losing_team)`
 			)
 			.not('game_result', 'is', null)
-			.order('date', { ascending: true })
+			.order('date', { ascending: false })
 			.limit(10);
 
 		return {

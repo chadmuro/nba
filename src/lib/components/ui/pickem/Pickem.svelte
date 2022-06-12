@@ -57,7 +57,7 @@
 	<p>{gameDt.toFormat('h:mm a, ZZZZ')}</p>
 	<p class="text-lg py-2">Who you got?</p>
 	{#if !selectedTeam}
-		<div class="max-w-xl mx-auto flex justify-evenly">
+		<div class="max-w-xl mx-auto flex justify-evenly items-center">
 			<div
 				transition:fly|local={{
 					duration: 400,
