@@ -1,45 +1,6 @@
-<script context="module">
-	export async function load({ session }) {
-		if (!session) {
-			return {
-				status: 302,
-				redirect: '/login'
-			};
-		}
-		let {
-			data: profile,
-			error,
-			status
-		} = await supabase
-			.from('profiles')
-			.select(`username, country, favorite_team, avatar_url`)
-			.eq('id', session)
-			.single();
-
-		if (profile?.avatar_url) {
-			let { data: imageUrl } = supabase.storage
-				.from('avatars')
-				.getPublicUrl(profile.avatar_url.split('/').slice(1).join('/'));
-
-			return {
-				props: {
-					profile: {
-						...profile,
-						imageUrl: imageUrl.publicURL
-					}
-				}
-			};
-		}
-
-		return {
-			props: {
-				profile
-			}
-		};
-	}
-</script>
-
 <script>
+	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
+
 	import { toast } from '@zerodevx/svelte-toast';
 	import UploadAvatar from '$lib/components/UploadAvatar.svelte';
 	import supabase from '$lib/supabaseClient';

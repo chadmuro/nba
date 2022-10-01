@@ -1,0 +1,35 @@
+import { redirect } from '@sveltejs/kit';
+import supabase from '$lib/supabaseClient';
+
+const adminId = import.meta.env.VITE_ADMIN_ID;
+
+export async function load({ session }) {
+	if (session !== adminId) {
+		throw redirect(302, '/login');
+	}
+
+	const { data: upcomingGames, error: upcomingGamesError } = await supabase
+		.from('games')
+		.select(
+			`*, home_team (id, full_name, logo),
+    away_team (id, full_name, logo), season (year)`
+		)
+		.is('game_result', null)
+		.order('date', { ascending: true })
+		.limit(10);
+
+	const { data: completedGames, error: completedGamesError } = await supabase
+		.from('games')
+		.select(
+			`*, home_team (id, full_name, logo),
+    away_team (id, full_name, logo), season (year), game_result (home_team_score, away_team_score, winning_team, losing_team)`
+		)
+		.not('game_result', 'is', null)
+		.order('date', { ascending: false })
+		.limit(10);
+
+	return {
+		upcomingGames: upcomingGames || [],
+		completedGames: completedGames || []
+	};
+}
