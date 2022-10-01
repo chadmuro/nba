@@ -1,7 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import supabase from '$lib/supabaseClient';
 
-export async function load({ session }) {
+export async function load({ parent }) {
+	const { user: session } = parent();
+	
 	if (!session) {
 		throw redirect(302, '/login');
 	}

@@ -4,7 +4,7 @@
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { goto } from '$app/navigation';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 	import supabase from '$lib/supabaseClient';
 	import PickemCard from './PickemCard.svelte';
 	import { createDateTime } from '$lib/utils/createDateTime';
@@ -13,12 +13,12 @@
 	export let selectedTeam;
 
 	const handleHomeTeamClick = async (id) => {
-		if (!$session) {
+		if (!$page.data.user) {
 			return goto('/login');
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $session,
+			user_id: $page.data.user,
 			selected_team_id: id
 		});
 		if (data) {
@@ -30,12 +30,12 @@
 	};
 
 	const handleAwayTeamClick = async (id) => {
-		if (!$session) {
+		if (!$page.data.user) {
 			return goto('/login');
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $session,
+			user_id: $page.data.user,
 			selected_team_id: id
 		});
 		if (data) {

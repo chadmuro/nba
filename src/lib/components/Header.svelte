@@ -1,6 +1,6 @@
 <script>
 	import supabase from '$lib/supabaseClient';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	let loading = false;
@@ -60,7 +60,7 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		{#if $session}
+		{#if $page.data.user}
 			<button on:click={handleLogout} class="btn" disabled={loading}>Logout</button>
 		{:else}
 			<a href="/login" class="btn">Login</a>

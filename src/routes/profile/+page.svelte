@@ -1,19 +1,17 @@
 <script>
-	throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
-
 	import { toast } from '@zerodevx/svelte-toast';
 	import UploadAvatar from '$lib/components/UploadAvatar.svelte';
 	import supabase from '$lib/supabaseClient';
 	import countries from '$lib/constants/countries';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 	import { teams } from '$lib/stores/teamsStore';
 
-	export let profile;
+	export let data;
 
 	let loading = false;
-	let username = profile?.username || null;
-	let country = profile?.country || null;
-	let favorite_team = profile?.favorite_team || null;
+	let username = data.profile?.username || null;
+	let country = data.profile?.country || null;
+	let favorite_team = data.profile?.favorite_team || null;
 	let file = null;
 	let avatar_url = null;
 
@@ -24,7 +22,7 @@
 			if (file) {
 				const { data: imageData, error: imageError } = await supabase.storage
 					.from('avatars')
-					.upload($session + '/' + Date.now(), file, {
+					.upload($page.data.user + '/' + Date.now(), file, {
 						cacheControl: '3600',
 						upsert: false
 					});
@@ -33,7 +31,7 @@
 			}
 
 			const updates = {
-				id: $session,
+				id: $page.data.user,
 				username,
 				country,
 				favorite_team,
@@ -90,7 +88,7 @@
 				</option>
 			{/each}
 		</select>
-		<UploadAvatar bind:file imageUrl={profile?.imageUrl} />
+		<UploadAvatar bind:file imageUrl={data.profile?.imageUrl} />
 		<button class={`btn btn-primary my-4 ${loading && 'loading'}`}>Submit</button>
 	</form>
 </div>

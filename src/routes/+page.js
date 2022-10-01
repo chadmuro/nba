@@ -1,6 +1,7 @@
 import supabase from '$lib/supabaseClient';
 
-export async function load({ session }) {
+export async function load({ parent }) {
+	const { user: session } = parent();
 	const { data: upcomingGame, error: upcomingGamesError } = await supabase
 		.from('games')
 		.select(

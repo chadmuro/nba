@@ -30,6 +30,7 @@
 				if (error) throw error;
 				goto('/');
 			} catch (error) {
+				console.log(error);
 				errorMessage = error.error_description || error.message;
 				console.error(error.error_description || error.message);
 			} finally {

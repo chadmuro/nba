@@ -4,16 +4,16 @@
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import supabase from '$lib/supabaseClient';
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 
 	supabase.auth.onAuthStateChange((_, sbSession) => {
 		if (sbSession?.user) {
-			$session = sbSession.user?.id;
+			$page.data.user = sbSession.user?.id;
 			document.cookie = `session=${sbSession?.user?.id}; expires=${new Date(
 				sbSession.expires_at * 1000
 			).toUTCString()}`;
 		} else {
-			$session = false;
+			$page.data.user = false;
 			document.cookie.split(';').forEach(function (c) {
 				document.cookie = c
 					.replace(/^ +/, '')

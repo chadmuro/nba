@@ -1,5 +1,5 @@
 <script>
-	import { session } from '$app/stores';
+	import { page } from '$app/stores';
 </script>
 
 <div class="bg-base-200">
@@ -11,8 +11,8 @@
 					Welcome to NBA Pick'em. Choose a winner every night based on the line and climb the
 					leaderboard!
 				</p>
-				<a href={$session ? '/leaderboard' : '/login'} class="btn btn-primary"
-					>{$session ? 'Check out the leaderboard' : 'Get Started'}</a
+				<a href={$page.data.user ? '/leaderboard' : '/login'} class="btn btn-primary"
+					>{$page.data.user ? 'Check out the leaderboard' : 'Get Started'}</a
 				>
 			</div>
 		</div>
