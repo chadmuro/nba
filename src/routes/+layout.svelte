@@ -3,23 +3,13 @@
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';
-	import supabase from '$lib/supabaseClient';
+	import { startSupabaseSessionSync } from '@supabase/auth-helpers-sveltekit';
 	import { page } from '$app/stores';
+	import { invalidateAll } from '$app/navigation';
 
-	supabase.auth.onAuthStateChange((_, sbSession) => {
-		if (sbSession?.user) {
-			$page.data.user = sbSession.user?.id;
-			document.cookie = `session=${sbSession?.user?.id}; expires=${new Date(
-				sbSession.expires_at * 1000
-			).toUTCString()}`;
-		} else {
-			$page.data.user = false;
-			document.cookie.split(';').forEach(function (c) {
-				document.cookie = c
-					.replace(/^ +/, '')
-					.replace(/=.*/, '=;expires=' + new Date().toUTCString() + ';path=/');
-			});
-		}
+	startSupabaseSessionSync({
+		page,
+		handleRefresh: () => invalidateAll()
 	});
 </script>
 

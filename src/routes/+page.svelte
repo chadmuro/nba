@@ -1,6 +1,10 @@
 <script>
 	import Hero from '$lib/components/Hero.svelte';
 	import Pickem from '$lib/components/ui/pickem/Pickem.svelte';
+	import { page } from '$app/stores';
+
+	console.log($page);
+
 	export let data;
 </script>
 

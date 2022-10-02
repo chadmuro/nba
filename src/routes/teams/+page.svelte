@@ -4,4 +4,4 @@
 	export let data;
 </script>
 
-ß<TeamsList teams={data.teams} />
+<TeamsList teams={data.teams} />

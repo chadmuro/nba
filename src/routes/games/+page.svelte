@@ -5,7 +5,7 @@
 	import { getPagination } from '$lib/utils/getPagination';
 
 	export let data;
-	let session = $page.data.user;
+	let session = $page.data.session.user;
 
 	let currentPage = 1;
 	const handlePageClick = async (page) => {

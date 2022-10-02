@@ -1,9 +1,9 @@
 import { redirect } from '@sveltejs/kit';
 import supabase from '$lib/supabaseClient';
+import { withAuth } from '@supabase/auth-helpers-sveltekit';
 
-export async function load({ parent }) {
-	const { user: session } = parent();
-	if (!session) {
+export const load = withAuth(async({ session }) => {
+	if (!session.user) {
 		throw redirect(302, '/login');
 	}
 	let {
@@ -13,7 +13,7 @@ export async function load({ parent }) {
 	} = await supabase
 		.from('profiles')
 		.select(`username, country, favorite_team, avatar_url`)
-		.eq('id', session)
+		.eq('id', session.user.id)
 		.single();
 
 	if (profile?.avatar_url) {
@@ -32,4 +32,4 @@ export async function load({ parent }) {
 	return {
 		profile
 	};
-}
+});

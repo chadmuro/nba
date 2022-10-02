@@ -1,10 +1,10 @@
 import { redirect } from '@sveltejs/kit';
+import { withAuth } from '@supabase/auth-helpers-sveltekit';
 
-export async function load({ parent }) {
-	const { user: session } = parent();
-	if (session) {
+export const load = withAuth(async({ session }) => {
+	if (session.user) {
 		throw redirect(302, '/profile');
 	}
 
 	return {};
-}
+})

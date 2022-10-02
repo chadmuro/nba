@@ -1,11 +1,11 @@
 import { redirect } from '@sveltejs/kit';
 import supabase from '$lib/supabaseClient';
+import { withAuth } from '@supabase/auth-helpers-sveltekit';
 
 const adminId = import.meta.env.VITE_ADMIN_ID;
 
-export async function load({ parent }) {
-	const { user: session } = parent();
-	if (session !== adminId) {
+export const load = withAuth(async({ session }) => {
+	if (session.user.id !== adminId) {
 		throw redirect(302, '/login');
 	}
 
@@ -33,4 +33,4 @@ export async function load({ parent }) {
 		upcomingGames: upcomingGames || [],
 		completedGames: completedGames || []
 	};
-}
+})

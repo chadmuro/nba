@@ -29,6 +29,7 @@
   },
   "type": "module",
   "dependencies": {
+    "@supabase/auth-helpers-sveltekit": "^0.7.1",
     "@supabase/supabase-js": "^1.34.1",
     "@zerodevx/svelte-toast": "^0.7.1",
     "daisyui": "^2.14.0",

@@ -13,12 +13,12 @@
 	export let selectedTeam;
 
 	const handleHomeTeamClick = async (id) => {
-		if (!$page.data.user) {
+		if (!$page.data.session.user) {
 			return goto('/login');
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $page.data.user,
+			user_id: $page.data.session.user,
 			selected_team_id: id
 		});
 		if (data) {
@@ -30,12 +30,12 @@
 	};
 
 	const handleAwayTeamClick = async (id) => {
-		if (!$page.data.user) {
+		if (!$page.data.session.user) {
 			return goto('/login');
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $page.data.user,
+			user_id: $page.data.session.user,
 			selected_team_id: id
 		});
 		if (data) {

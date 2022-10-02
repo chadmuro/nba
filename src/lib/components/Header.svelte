@@ -60,7 +60,7 @@
 		</ul>
 	</div>
 	<div class="navbar-end">
-		{#if $page.data.user}
+		{#if $page.data.session.user}
 			<button on:click={handleLogout} class="btn" disabled={loading}>Logout</button>
 		{:else}
 			<a href="/login" class="btn">Login</a>

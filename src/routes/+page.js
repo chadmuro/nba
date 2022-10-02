@@ -1,7 +1,8 @@
 import supabase from '$lib/supabaseClient';
+import { withAuth } from '@supabase/auth-helpers-sveltekit';
 
-export async function load({ parent }) {
-	const { user: session } = parent();
+export const load = withAuth(async({ session }) => {
+	console.log(session)
 	const { data: upcomingGame, error: upcomingGamesError } = await supabase
 		.from('games')
 		.select(
@@ -14,16 +15,16 @@ export async function load({ parent }) {
 
 	let selectedTeam;
 
-	if (!session) {
+	if (!session.user) {
 		selectedTeam = undefined;
 	}
 
-	if (session) {
+	if (session.user) {
 		const { data, error: selectedTeamError } = await supabase
 			.from('game_select')
 			.select('selected_team_id')
 			.eq('game_id', upcomingGame[0].id)
-			.eq('user_id', session)
+			.eq('user_id', session.user.id)
 			.limit(1);
 
 		selectedTeam = data;
@@ -33,4 +34,4 @@ export async function load({ parent }) {
 		upcomingGame: upcomingGame[0],
 		selectedTeam: selectedTeam ? selectedTeam[0] : undefined
 	};
-}
+});
