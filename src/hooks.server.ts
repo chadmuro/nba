@@ -1,5 +1,4 @@
-import supabase from '$lib/supabaseClient';
-import { dev } from '$app/environment';
+import '$lib/supabaseClient';
 import { auth } from '@supabase/auth-helpers-sveltekit/server';
 
 export const handle = auth();
