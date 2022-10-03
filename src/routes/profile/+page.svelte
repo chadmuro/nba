@@ -22,7 +22,7 @@
 			if (file) {
 				const { data: imageData, error: imageError } = await supabase.storage
 					.from('avatars')
-					.upload($page.data.session.user + '/' + Date.now(), file, {
+					.upload($page.data.session.user.id + '/' + Date.now(), file, {
 						cacheControl: '3600',
 						upsert: false
 					});
@@ -31,7 +31,7 @@
 			}
 
 			const updates = {
-				id: $page.data.session.user,
+				id: $page.data.session.user.id,
 				username,
 				country,
 				favorite_team,

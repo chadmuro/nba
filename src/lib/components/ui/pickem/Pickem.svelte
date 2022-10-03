@@ -18,7 +18,7 @@
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $page.data.session.user,
+			user_id: $page.data.session.user.id,
 			selected_team_id: id
 		});
 		if (data) {
@@ -35,7 +35,7 @@
 		}
 		const { data, error } = await supabase.from('game_select').insert({
 			game_id: upcomingGame.id,
-			user_id: $page.data.session.user,
+			user_id: $page.data.session.user.id,
 			selected_team_id: id
 		});
 		if (data) {

@@ -42,7 +42,7 @@
 				class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
 			>
 				<li><a href="/">Home</a></li>
-				<li><a href="/teams">Teams</a></li>
+				<!-- <li><a href="/teams">Teams</a></li> -->
 				<li><a href="/games">Games History</a></li>
 				<li><a href="/leaderboard">Leaderboard</a></li>
 				<li><a href="/profile">Profile</a></li>
@@ -53,7 +53,7 @@
 	<div class="navbar-center hidden lg:flex">
 		<ul class="menu menu-horizontal p-0">
 			<li><a href="/">Home</a></li>
-			<li><a href="/teams">Teams</a></li>
+			<!-- <li><a href="/teams">Teams</a></li> -->
 			<li><a href="/games">Games History</a></li>
 			<li><a href="/leaderboard">Leaderboard</a></li>
 			<li><a href="/profile">Profile</a></li>

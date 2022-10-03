@@ -13,7 +13,6 @@ const parseCookie = (str) => {
 
 /** @type {import('./$types').LayoutServerLoad} */
 export async function load({ request, setHeaders }) {
-	console.log(request.headers)
   const session = parseCookie(request.headers.get('cookie'));
   return {
     user: session?.session ? session.session : null

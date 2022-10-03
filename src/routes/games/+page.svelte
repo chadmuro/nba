@@ -1,6 +1,7 @@
 <script>
 	import CompletedGames from '$lib/components/tables/CompletedGames.svelte';
 	import Pagination from '$lib/components/ui/Pagination.svelte';
+	import supabase from '$lib/supabaseClient';
 	import { page } from '$app/stores';
 	import { getPagination } from '$lib/utils/getPagination';
 
@@ -20,7 +21,7 @@
 				`*, game_id (date, time, home_team (id, full_name, logo), away_team (id, full_name, logo), game_result (home_team_score, away_team_score, winning_team, losing_team))`,
 				{ count: 'exact' }
 			)
-			.match({ user_id: session })
+			.match({ user_id: session.id })
 			.not('game_result', 'is', null)
 			.order('created_at', { ascending: false })
 			.range(from, to)
