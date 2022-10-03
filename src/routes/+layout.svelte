@@ -1,5 +1,6 @@
 <script>
 	import '../app.css';
+	import '$lib/supabaseClient';
 	import { SvelteToast } from '@zerodevx/svelte-toast';
 	import Header from '$lib/components/Header.svelte';
 	import Footer from '$lib/components/Footer.svelte';

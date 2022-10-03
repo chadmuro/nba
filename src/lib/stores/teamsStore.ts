@@ -4,7 +4,6 @@ import { writable } from 'svelte/store';
 export const teams = writable([]);
 
 export async function getTeams() {
-	console.log('data fetch');
 	const { data, error } = await supabase
 		.from('teams')
 		.select(
